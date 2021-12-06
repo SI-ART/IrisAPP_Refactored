@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "486619735422",
+    "firebase_url": "https://iris-24c17-default-rtdb.firebaseio.com",
+    "project_id": "iris-24c17",
+    "storage_bucket": "iris-24c17.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:486619735422:android:7de6f2750a516b17a1bf2f",
+        "android_client_info": {
+          "package_name": "com.igrow.iris"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "486619735422-i6rhgk762l6jjdu30hpnpkcc0v5vj2lv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDO-jkFKJze7Fz_z6cxps5kBQ4fMiwJa6s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "486619735422-i6rhgk762l6jjdu30hpnpkcc0v5vj2lv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "486619735422-tu0decvf3vc345i1buskt975j8u6o948.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.igrow.iris"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:486619735422:android:1bc1ad3f731dc837a1bf2f",
+        "android_client_info": {
+          "package_name": "com.example.iris"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "486619735422-i6rhgk762l6jjdu30hpnpkcc0v5vj2lv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDO-jkFKJze7Fz_z6cxps5kBQ4fMiwJa6s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "486619735422-i6rhgk762l6jjdu30hpnpkcc0v5vj2lv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "486619735422-tu0decvf3vc345i1buskt975j8u6o948.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.igrow.iris"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
