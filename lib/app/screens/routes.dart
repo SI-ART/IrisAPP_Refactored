@@ -1,5 +1,5 @@
 class Routes {
-  static const String primary = "/primary";
+  static const String gateway = "/gateway";
 
   //Auth
   static const String login = "/login";

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+
+import '../routes.dart';
 
 class Wellcome extends StatefulWidget {
   const Wellcome({Key? key}) : super(key: key);
@@ -12,12 +15,12 @@ class _WellcomeState extends State<Wellcome> with TickerProviderStateMixin {
 
   late final AnimationController _controller = AnimationController(
     vsync: this,
-    duration: const Duration(seconds: 2),
+    duration: const Duration(seconds: 1),
   );
 
   late final AnimationController _controllerb = AnimationController(
     vsync: this,
-    duration: const Duration(seconds: 2),
+    duration: const Duration(seconds: 1),
   );
 
   late Animation<double> _animation;
@@ -40,6 +43,7 @@ class _WellcomeState extends State<Wellcome> with TickerProviderStateMixin {
   @override
   void dispose() {
     _controller.dispose();
+    _controllerb.dispose();
     super.dispose();
   }
 
@@ -56,7 +60,7 @@ class _WellcomeState extends State<Wellcome> with TickerProviderStateMixin {
             alignment: Alignment.center,
           ),
           Container(
-            color: Colors.green.withOpacity(0.2),
+            color: Colors.green.withOpacity(0.3),
           ),
           FadeTransition(
             opacity: _animation,
@@ -139,7 +143,7 @@ class _WellcomeState extends State<Wellcome> with TickerProviderStateMixin {
                 Padding(
                   padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => Modular.to.pushNamed(Routes.login),
                     style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.zero,
                         shape: RoundedRectangleBorder(
@@ -180,7 +184,7 @@ class _WellcomeState extends State<Wellcome> with TickerProviderStateMixin {
                 Padding(
                   padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => Modular.to.pushNamed(Routes.register),
                     style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.zero,
                         shape: RoundedRectangleBorder(

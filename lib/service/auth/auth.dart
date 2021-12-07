@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:iris/app/screens/routes.dart';
 import 'package:iris/models/auth/auth_model.dart';
 
 class Auth {
@@ -22,22 +24,13 @@ class Auth {
           await auth
               .createUserWithEmailAndPassword(
                   email: authModel.email, password: authModel.password)
-              .then((user) {
-            /*   .then((_) {
-            Navigator.pop(context);
-          }).then((_) {
-            Navigator.pop(context);
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => StationNB()),
-            );
-          });*/
-
-            String uid = user.user!.uid;
-            final reference =
-                FirebaseDatabase.instance.reference().child('Users').child(uid);
-            reference.set({'Nome': authModel.name});
+              .then((_) {
+            Modular.to.navigate(Routes.gateway);
           });
+
+          String uid = FirebaseAuth.instance.currentUser!.uid;
+
+          FirebaseDatabase.instance.reference().child('Users').child(uid);
         } catch (e) {
           ScaffoldMessenger.of(authModel.context).showSnackBar(
             const SnackBar(
@@ -70,7 +63,9 @@ class Auth {
       );
     } else {
       try {
-        await auth.signInWithEmailAndPassword(email: email, password: password);
+        await auth
+            .signInWithEmailAndPassword(email: email, password: password)
+            .then((value) => Modular.to.navigate(Routes.gateway));
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -99,7 +94,7 @@ class Auth {
   }
 
   ///Verify user's status
-  Future<bool> userStatus() async {
+  Future<bool> get userStatus async {
     if (auth.currentUser == null) {
       return false;
     } else {
