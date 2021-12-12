@@ -47,6 +47,7 @@ android {
         applicationId "com.example.iris"
         minSdkVersion 21
         targetSdkVersion 30
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -57,6 +58,8 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.+
             minifyEnabled true
             signingConfig signingConfigs.debug
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }

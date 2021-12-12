@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:iris/app/screens/routes.dart';
 import 'package:iris/models/auth/auth_model.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class Auth {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -87,50 +86,5 @@ class Auth {
   ///Reset Password
   Future<void> resetPassword(String email) async {
     auth.sendPasswordResetEmail(email: email);
-  }
-
-  /// Get user's uid
-  String get uid {
-    return auth.currentUser!.uid;
-  }
-
-  ///Verify user's status
-  bool get userStatus {
-    if (auth.currentUser == null) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  String get userName {
-    late String name;
-    FirebaseDatabase.instance
-        .reference()
-        .child('Users')
-        .child(uid)
-        .child("Nome")
-        .once()
-        .then((value) => name = value.value);
-    return name;
-  }
-
-  ImageProvider get userPic {
-    late String path;
-    FirebaseDatabase.instance
-        .reference()
-        .child('Users')
-        .child(uid)
-        .child("Profile")
-        .child("urlImageProfile")
-        .once()
-        .then((value) {
-      path = value.value;
-    });
-    if (path != "") {
-      return CachedNetworkImageProvider(path);
-    } else {
-      return const CachedNetworkImageProvider("assets/image/unknown-user.jpg");
-    }
   }
 }

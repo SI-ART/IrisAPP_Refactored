@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iris/service/auth/auth.dart';
+import 'package:iris/service/user/auth.dart';
 import 'package:iris/utilities/constants.dart';
 
 import '../routes.dart';

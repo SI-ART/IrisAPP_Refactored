@@ -1,7 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:iris/service/auth/auth.dart';
 import 'package:iris/service/gateway/gateway_list.dart';
+import 'package:iris/service/user/user.dart';
 import 'package:iris/utilities/globals.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -19,13 +19,12 @@ class _ListCompGateState extends State<ListCompGate> {
   final ref = FirebaseDatabase.instance
       .reference()
       .child("Users")
-      .child(Auth().uid)
+      .child(User().uid)
       .child("Gateway");
 
   @override
   void initState() {
     ref.onChildAdded.listen(fgr.onGatewayAdded);
-
     ref.onChildChanged.listen(fgr.onGatewayUpdated);
     ref.onChildRemoved.listen(fgr.onGatewayDeleted);
     super.initState();
@@ -40,7 +39,7 @@ class _ListCompGateState extends State<ListCompGate> {
           child: Column(
             children: <Widget>[
               Observer(
-                builder: (context) => ListView.builder(
+                builder: (_) => ListView.builder(
                     primary: false,
                     shrinkWrap: true,
                     itemCount: fgr.gates.length,
@@ -56,6 +55,8 @@ class _ListCompGateState extends State<ListCompGate> {
                                   borderRadius: BorderRadius.circular(20)),
                               elevation: 1,
                               child: InkWell(
+                                onTap: () =>
+                                    fgr.navigateToGateway(fgr.gates[position]),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,
