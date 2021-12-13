@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 
+///The Gateway SuperClass
 class GatewayModel {
   String? _id;
   String? _name;

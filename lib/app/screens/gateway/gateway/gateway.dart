@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:iris/app/screens/gateway/gateway/gateway_report.dart';
 import 'package:iris/app/screens/gateway/gateway/gateway_time.dart';
 import 'package:iris/app/screens/gateway/gateway/station_list.dart';
@@ -33,12 +34,8 @@ class _GatewayState extends State<Gateway> {
         actions: <Widget>[
           TextButton(
             onPressed: () {
-              /*  pushNewScreen(
-                context,
-                screen: GatewayConfig(widget.gatewayModel),
-                withNavBar: true,
-                pageTransitionAnimation: PageTransitionAnimation.cupertino,
-              );*/
+              Modular.to.pushNamed('/gateway/gateconfig',
+                  arguments: widget.gatewayModel);
             },
             child: const Icon(
               Icons.settings,

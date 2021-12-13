@@ -8,11 +8,11 @@ mixin _$StationListService on _StationListService, Store {
   final _$_StationActionController = ActionController(name: '_GatewayService');
 
   @override
-  void onStationAdded(Event event) {
+  void onStationAdded(Event event, GatewayModel gatewayModel) {
     final _$actionInfo = _$_StationActionController.startAction(
         name: '_GatewayService.onStationAdded');
     try {
-      return super.onStationAdded(event);
+      return super.onStationAdded(event, gatewayModel);
     } finally {
       _$_StationActionController.endAction(_$actionInfo);
     }
@@ -30,11 +30,11 @@ mixin _$StationListService on _StationListService, Store {
   }
 
   @override
-  void onStationUpdated(Event event) {
+  void onStationUpdated(Event event, GatewayModel gatewayModel) {
     final _$actionInfo = _$_StationActionController.startAction(
         name: '_GatewayService.onStationUpdated');
     try {
-      return super.onStationUpdated(event);
+      return super.onStationUpdated(event, gatewayModel);
     } finally {
       _$_StationActionController.endAction(_$actionInfo);
     }

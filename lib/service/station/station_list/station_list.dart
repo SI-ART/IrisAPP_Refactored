@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:iris/models/gateway/gateway_model.dart';
 import 'package:iris/models/station/station_model.dart';
 import 'package:mobx/mobx.dart';
 
@@ -11,8 +12,8 @@ abstract class _StationListService with Store {
   ObservableList<StationModel> stations = ObservableList<StationModel>();
 
   @action
-  void onStationAdded(Event event) {
-    stations.add(StationModel.fromSnapshot(event.snapshot));
+  void onStationAdded(Event event, GatewayModel gatewayModel) {
+    stations.add(StationModel.fromSnapshot(event.snapshot, gatewayModel));
   }
 
   @action
@@ -21,10 +22,10 @@ abstract class _StationListService with Store {
   }
 
   @action
-  void onStationUpdated(Event event) {
+  void onStationUpdated(Event event, GatewayModel gatewayModel) {
     var oldStationValue =
         stations.singleWhere((station) => station.idS == event.snapshot.key);
     stations[stations.indexOf(oldStationValue)] =
-        StationModel.fromSnapshot(event.snapshot);
+        StationModel.fromSnapshot(event.snapshot, gatewayModel);
   }
 }

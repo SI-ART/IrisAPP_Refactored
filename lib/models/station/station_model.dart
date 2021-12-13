@@ -2,8 +2,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:community_material_icon/community_material_icon.dart';
+import 'package:iris/models/gateway/gateway_model.dart';
 
-class StationModel {
+class StationModel extends GatewayModel {
   String? _idS;
   String? _nameS;
   String? _urlImageS;
@@ -13,18 +14,18 @@ class StationModel {
   Rssi? _rssi;
   Icon? _networkIcon;
 
-  StationModel(this._idS, this._nameS, this._urlImageS, this._isOnS,
-      this._isConnectedS, this._isSelectedS, this._rssi, this._networkIcon);
-
-  StationModel.map(dynamic obj) {
-    _idS = obj['idS'];
-    _nameS = obj['Name'];
-    _urlImageS = obj['urlImage'];
-    _isOnS = obj['isOn'];
-    _isOnS = obj['rssi'];
-    _isConnectedS = obj['isConnected'];
-    _networkIcon = obj['_networkIcon'];
-  }
+  StationModel(
+      GatewayModel gatewayModel,
+      this._idS,
+      this._nameS,
+      this._urlImageS,
+      this._isOnS,
+      this._isConnectedS,
+      this._isSelectedS,
+      this._rssi,
+      this._networkIcon)
+      : super(gatewayModel.id, gatewayModel.name, gatewayModel.desc,
+            gatewayModel.isOn);
 
   String get idS => _idS!;
 
@@ -44,7 +45,8 @@ class StationModel {
 
   set isSelectS(bool value) => value = _isSelectedS!;
 
-  factory StationModel.fromSnapshot(DataSnapshot snapshot) {
+  factory StationModel.fromSnapshot(
+      DataSnapshot snapshot, GatewayModel gatewayModel) {
     Rssi? rssiset;
     Icon? networkIconset;
 
@@ -88,6 +90,7 @@ class StationModel {
         }
     }
     return StationModel(
+      gatewayModel,
       snapshot.key,
       snapshot.value['Name'],
       snapshot.value['urlImage'],

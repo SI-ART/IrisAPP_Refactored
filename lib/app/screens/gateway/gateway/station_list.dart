@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:iris/models/gateway/gateway_model.dart';
 import 'package:iris/service/station/station_list/station_list.dart';
 import 'package:iris/service/user/user.dart';
@@ -26,7 +27,9 @@ class _StationListState extends State<StationList> {
         .child(widget.gatewayModel.id)
         .child('Station')
         .onChildAdded
-        .listen(stationListService.onStationAdded);
+        .listen((event) {
+      stationListService.onStationAdded(event, widget.gatewayModel);
+    });
 
     FirebaseDatabase.instance
         .reference()
@@ -36,7 +39,9 @@ class _StationListState extends State<StationList> {
         .child(widget.gatewayModel.id)
         .child('Station')
         .onChildRemoved
-        .listen(stationListService.onStationRemoved);
+        .listen((event) {
+      stationListService.onStationRemoved(event);
+    });
 
     FirebaseDatabase.instance
         .reference()
@@ -46,7 +51,9 @@ class _StationListState extends State<StationList> {
         .child(widget.gatewayModel.id)
         .child('Station')
         .onChildChanged
-        .listen(stationListService.onStationUpdated);
+        .listen((event) {
+      stationListService.onStationUpdated(event, widget.gatewayModel);
+    });
     super.initState();
   }
 
@@ -81,6 +88,8 @@ class _StationListState extends State<StationList> {
                                       borderRadius: BorderRadius.circular(20)),
                                   elevation: 5,
                                   child: GestureDetector(
+                                    onTap: () =>
+                                        Modular.to.pushNamed('/station'),
                                     child: Container(
                                       color: stationListService
                                               .stations[position].isSelectS

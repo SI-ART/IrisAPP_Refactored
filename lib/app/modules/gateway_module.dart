@@ -1,5 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:iris/app/screens/gateway/gateway/gateway.dart';
+import 'package:iris/app/screens/gateway/gateway/gateway_config/gateway_config.dart';
 import 'package:iris/app/screens/gateway/gatewaylist/gatewaylist.dart';
 import 'package:iris/app/screens/gateway/newgateway/new_gateway.dart';
 import 'package:iris/app/screens/routes.dart';
@@ -17,5 +18,7 @@ class GatewayModule extends Module {
             child: (_, args) => Gateway(
                   gatewayModel: args.data,
                 )),
+        ChildRoute(Routes.gateconfig,
+            child: (_, args) => GatewayConfig(args.data)),
       ];
 }
