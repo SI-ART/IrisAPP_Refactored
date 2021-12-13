@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:iris/models/gateway/gateway_model.dart';
 import 'package:iris/models/station/station_model.dart';
 import 'package:iris/service/station/station/station.dart';
 import 'package:iris/utilities/globals.dart';
@@ -12,11 +11,8 @@ import 'map_station.dart';
 import 'station_valve.dart';
 
 class Station extends StatefulWidget {
-  final GatewayModel gatewayModel;
   final StationModel stationModel;
-  const Station(
-      {Key? key, required this.gatewayModel, required this.stationModel})
-      : super(key: key);
+  const Station({Key? key, required this.stationModel}) : super(key: key);
 
   @override
   _StationState createState() => _StationState();
@@ -293,11 +289,9 @@ class _StationState extends State<Station> {
                           Container(
                             child: stationService.currentScreen == 1
                                 ? StationValve(
-                                    gatewayModel: widget.gatewayModel,
                                     stationModel: widget.stationModel)
                                 : stationService.currentScreen == 2
-                                    ? StationData(cardSize, widget.stationModel,
-                                        widget.gatewayModel)
+                                    ? StationData(cardSize, widget.stationModel)
                                     : Container(),
                           ),
                         ],

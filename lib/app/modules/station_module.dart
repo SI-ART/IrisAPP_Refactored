@@ -9,7 +9,6 @@ class StationModule extends Module {
   List<ModularRoute> get routes => [
         ChildRoute(Modular.initialRoute,
             child: (_, args) => Station(
-                  gatewayModel: args.data,
                   stationModel: args.data,
                 )),
       ];

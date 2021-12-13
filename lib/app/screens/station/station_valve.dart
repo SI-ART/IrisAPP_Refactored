@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:iris/models/gateway/gateway_model.dart';
 import 'package:iris/models/station/station_model.dart';
 import 'package:iris/service/station/station/stationvalve/station_valve.dart';
 import 'package:iris/utilities/globals.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class StationValve extends StatefulWidget {
-  final GatewayModel gatewayModel;
   final StationModel stationModel;
-  const StationValve(
-      {Key? key, required this.gatewayModel, required this.stationModel})
-      : super(key: key);
+  const StationValve({Key? key, required this.stationModel}) : super(key: key);
 
   @override
   _StationValveState createState() => _StationValveState();
@@ -20,8 +16,7 @@ class _StationValveState extends State<StationValve> {
   late StationValveService stationValveService;
   @override
   void initState() {
-    stationValveService =
-        StationValveService(widget.gatewayModel, widget.stationModel);
+    stationValveService = StationValveService(widget.stationModel);
     super.initState();
   }
 
