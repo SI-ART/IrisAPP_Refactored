@@ -19,7 +19,7 @@ class _ListCompGateState extends State<ListCompGate> {
   final ref = FirebaseDatabase.instance
       .reference()
       .child("Users")
-      .child(User().uid)
+      .child(UserData.uid)
       .child("Gateway");
 
   @override

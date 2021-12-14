@@ -23,7 +23,7 @@ class _StationListState extends State<StationList> {
     FirebaseDatabase.instance
         .reference()
         .child('Users')
-        .child(User().uid)
+        .child(UserData.uid)
         .child("Gateway")
         .child(widget.gatewayModel.id)
         .child('Station')
@@ -35,7 +35,7 @@ class _StationListState extends State<StationList> {
     FirebaseDatabase.instance
         .reference()
         .child('Users')
-        .child(User().uid)
+        .child(UserData.uid)
         .child("Gateway")
         .child(widget.gatewayModel.id)
         .child('Station')
@@ -47,7 +47,7 @@ class _StationListState extends State<StationList> {
     FirebaseDatabase.instance
         .reference()
         .child('Users')
-        .child(User().uid)
+        .child(UserData.uid)
         .child("Gateway")
         .child(widget.gatewayModel.id)
         .child('Station')

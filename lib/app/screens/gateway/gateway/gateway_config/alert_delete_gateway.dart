@@ -33,7 +33,7 @@ class _AlertDelete extends State<AlertDelete> {
   final ref = FirebaseDatabase.instance
       .reference()
       .child('Users')
-      .child(User().uid)
+      .child(UserData.uid)
       .child('Gateway');
 
   late String gateName;

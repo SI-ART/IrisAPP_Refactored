@@ -17,7 +17,7 @@ class IrisInitialize {
   final _reference = FirebaseDatabase.instance
       .reference()
       .child('Users')
-      .child(User().uid)
+      .child(UserData.uid)
       .child('Profile');
 
   void _messagingFistInit() {

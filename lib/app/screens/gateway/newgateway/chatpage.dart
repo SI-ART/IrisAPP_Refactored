@@ -47,13 +47,13 @@ class _ChatPage extends State<ChatPage> {
   final ref = FirebaseDatabase.instance
       .reference()
       .child('Users')
-      .child(User().uid)
+      .child(UserData.uid)
       .child('Gateway');
 
   late Stream<List<int>> _receivedDataStream;
   bool flagRequest = true;
   bool _connected = false;
-  String uid = User().uid;
+  String uid = UserData.uid;
 
   CodeReceiver codeReceiver = CodeReceiver();
 

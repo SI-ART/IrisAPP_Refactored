@@ -40,7 +40,7 @@ abstract class _GateReport with Store {
 
   final fs = FirebaseFirestore.instance
       .collection("Users")
-      .doc(User().uid)
+      .doc(UserData.uid)
       .collection("Gateway");
 
   @observable

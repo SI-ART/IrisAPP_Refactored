@@ -1,10 +1,10 @@
 import 'package:firebase_database/firebase_database.dart';
 
-class StationDataModel {
+class StationValveModel {
   String? key;
   bool? status;
 
-  StationDataModel.fromSnapshot(DataSnapshot snapshot) {
+  StationValveModel.fromSnapshot(DataSnapshot snapshot) {
     status = snapshot.value['isOn'];
   }
 }

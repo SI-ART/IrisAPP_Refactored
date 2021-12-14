@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:mobx/mobx.dart';
 
-class User {
+class UserData {
   FirebaseAuth auth = FirebaseAuth.instance;
 
   @observable
@@ -12,8 +12,8 @@ class User {
   Observable<String> name = Observable('');
 
   /// Get user's uid
-  String get uid {
-    return auth.currentUser!.uid;
+  static String get uid {
+    return FirebaseAuth.instance.currentUser!.uid;
   }
 
   ///Verify user's status

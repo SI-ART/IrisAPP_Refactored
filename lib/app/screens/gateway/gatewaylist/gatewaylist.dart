@@ -40,7 +40,7 @@ class _GatewayListState extends State<GatewayList> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       FutureBuilder(
-                          future: User().userPic,
+                          future: UserData().userPic,
                           initialData: "",
                           builder: (BuildContext context,
                                   AsyncSnapshot<String> text) =>
@@ -61,7 +61,7 @@ class _GatewayListState extends State<GatewayList> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           FutureBuilder(
-                              future: User().userName,
+                              future: UserData().userName,
                               initialData: "",
                               builder: (BuildContext context,
                                       AsyncSnapshot<String> text) =>

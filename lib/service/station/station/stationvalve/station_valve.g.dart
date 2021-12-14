@@ -21,7 +21,7 @@ mixin _$StationValveService on _StationValveService, Store {
       ActionController(name: '_StationValveService');
 
   @override
-  void onStatusUpdate(StationDataModel value) {
+  void onStatusUpdate(StationValveModel value) {
     final _$actionInfo = _$_statusActionController.startAction(
         name: '_StationService.onStatusUpdate');
     try {

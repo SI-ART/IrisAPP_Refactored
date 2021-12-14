@@ -14,7 +14,7 @@ class TimeList extends StatefulWidget {
 class _TimeListState extends State<TimeList> {
   CollectionReference fs = FirebaseFirestore.instance
       .collection('Users')
-      .doc(User().uid)
+      .doc(UserData.uid)
       .collection('Gateway')
       .doc('-MfxDSLybTci5FnmUf1z')
       .collection('Times');

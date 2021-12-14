@@ -82,7 +82,7 @@ class NewGatewayService with Store {
   final ref = FirebaseDatabase.instance
       .reference()
       .child('Users')
-      .child(User().uid)
+      .child(UserData.uid)
       .child('Gateway');
 
   CodeReceiver codeReceiver = CodeReceiver();
@@ -225,7 +225,7 @@ class NewGatewayService with Store {
         switch (String.fromCharCodes(data)) {
           case '/':
             {
-              _sendData(User().uid);
+              _sendData(UserData.uid);
               isWaitingGid = true;
               break;
             }
