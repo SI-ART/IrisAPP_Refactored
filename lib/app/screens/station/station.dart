@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:iris/models/station/station_model.dart';
 import 'package:iris/service/station/station/station.dart';
 import 'package:iris/utilities/globals.dart';
@@ -82,221 +83,227 @@ class _StationState extends State<Station> {
                 return Container(
                   color: Colors.white,
                   height: height,
-                  child: Stack(
-                    children: <Widget>[
-                      stationService.currentScreen == 3
-                          ? StationMap(cardSize)
-                          : Container(),
-                      Column(
-                        children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 20, top: 20),
-                                child: Text(
-                                  widget.stationModel.nameS,
-                                  style: const TextStyle(
-                                      fontFamily: 'Schyler',
-                                      color: Colors.black,
-                                      fontSize: 24),
-                                ),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(left: 20),
-                                child: Text(
-                                  'Descrição',
-                                  style: TextStyle(
-                                      fontFamily: 'Schyler',
-                                      color: Global.black_opacity,
-                                      fontSize: 14),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  child: Observer(
+                    builder: (context) => Stack(
+                      children: <Widget>[
+                        stationService.currentScreen == 3
+                            ? StationMap(cardSize)
+                            : Container(),
+                        Column(
+                          children: <Widget>[
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 20, bottom: 10),
-                                  child: SizedBox(
-                                    height: cardSize,
-                                    width: cardSize,
-                                    child: Card(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      elevation: 5,
-                                      child: Container(
-                                        decoration:
-                                            stationService.currentScreen == 1
-                                                ? stationService.colorsIsTrue
-                                                : stationService.colorsIsFalse,
-                                        child: InkWell(
-                                          onTap: () {
-                                            stationService.setScreen(1);
-                                          },
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Icon(
-                                                LineAwesomeIcons
-                                                    .broadcast_tower,
-                                                color: stationService
-                                                            .currentScreen ==
-                                                        1
-                                                    ? stationService
-                                                        .colorIconIsTrue
-                                                    : stationService
-                                                        .colorIconIsFalse,
-                                                size: 30,
-                                              ),
-                                              Text(
-                                                'Estação',
-                                                style: TextStyle(
-                                                    fontFamily: 'Schyler',
-                                                    color: stationService
-                                                                .currentScreen ==
-                                                            1
-                                                        ? stationService
-                                                            .colorIconIsTrue
-                                                        : stationService
-                                                            .colorIconIsFalse,
-                                                    fontSize: 12),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                  padding:
+                                      const EdgeInsets.only(left: 20, top: 20),
+                                  child: Text(
+                                    widget.stationModel.nameS,
+                                    style: const TextStyle(
+                                        fontFamily: 'Schyler',
+                                        color: Colors.black,
+                                        fontSize: 24),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 20),
-                                  child: SizedBox(
-                                    height: cardSize,
-                                    width: cardSize,
-                                    child: Card(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      elevation: 5,
-                                      child: Container(
-                                        decoration:
-                                            stationService.currentScreen == 2
-                                                ? stationService.colorsIsTrue
-                                                : stationService.colorsIsTrue,
-                                        child: InkWell(
-                                          onTap: () {
-                                            stationService.setScreen(2);
-                                          },
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Icon(
-                                                LineAwesomeIcons
-                                                    .low_temperature,
-                                                color: stationService
-                                                            .currentScreen ==
-                                                        2
-                                                    ? stationService
-                                                        .colorIconIsTrue
-                                                    : stationService
-                                                        .colorIconIsFalse,
-                                                size: 30,
-                                              ),
-                                              Text(
-                                                'Dados',
-                                                style: TextStyle(
-                                                    fontFamily: 'Schyler',
-                                                    color: stationService
-                                                                .currentScreen ==
-                                                            2
-                                                        ? stationService
-                                                            .colorIconIsTrue
-                                                        : stationService
-                                                            .colorIconIsFalse,
-                                                    fontSize: 12),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: cardSize,
-                                  width: cardSize,
-                                  child: Card(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    elevation: 5,
-                                    child: Container(
-                                      decoration:
-                                          stationService.currentScreen == 3
-                                              ? stationService.colorsIsTrue
-                                              : stationService.colorsIsTrue,
-                                      child: InkWell(
-                                        onTap: () {
-                                          stationService.setScreen(3);
-                                        },
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Icon(
-                                              LineAwesomeIcons.map_marked,
-                                              color: stationService
-                                                          .currentScreen ==
-                                                      3
-                                                  ? stationService
-                                                      .colorIconIsTrue
-                                                  : stationService
-                                                      .colorIconIsFalse,
-                                              size: 30,
-                                            ),
-                                            Text(
-                                              'Localização',
-                                              style: TextStyle(
-                                                  fontFamily: 'Schyler',
-                                                  color: stationService
-                                                              .currentScreen ==
-                                                          3
-                                                      ? stationService
-                                                          .colorIconIsTrue
-                                                      : stationService
-                                                          .colorIconIsFalse,
-                                                  fontSize: 12),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 20),
+                                  child: Text(
+                                    'Descrição',
+                                    style: TextStyle(
+                                        fontFamily: 'Schyler',
+                                        color: Global.black_opacity,
+                                        fontSize: 14),
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                          Container(
-                            child: stationService.currentScreen == 1
-                                ? StationValve(
-                                    stationModel: widget.stationModel)
-                                : stationService.currentScreen == 2
-                                    ? StationData(cardSize, widget.stationModel)
-                                    : Container(),
-                          ),
-                        ],
-                      ),
-                    ],
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 20, bottom: 10),
+                                    child: SizedBox(
+                                      height: cardSize,
+                                      width: cardSize,
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        elevation: 5,
+                                        child: Container(
+                                          decoration:
+                                              stationService.currentScreen == 1
+                                                  ? stationService.colorsIsTrue
+                                                  : stationService
+                                                      .colorsIsFalse,
+                                          child: InkWell(
+                                            onTap: () {
+                                              stationService.setScreen(1);
+                                            },
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Icon(
+                                                  LineAwesomeIcons
+                                                      .broadcast_tower,
+                                                  color: stationService
+                                                              .currentScreen ==
+                                                          1
+                                                      ? stationService
+                                                          .colorIconIsTrue
+                                                      : stationService
+                                                          .colorIconIsFalse,
+                                                  size: 30,
+                                                ),
+                                                Text(
+                                                  'Estação',
+                                                  style: TextStyle(
+                                                      fontFamily: 'Schyler',
+                                                      color: stationService
+                                                                  .currentScreen ==
+                                                              1
+                                                          ? stationService
+                                                              .colorIconIsTrue
+                                                          : stationService
+                                                              .colorIconIsFalse,
+                                                      fontSize: 12),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 20),
+                                    child: SizedBox(
+                                      height: cardSize,
+                                      width: cardSize,
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        elevation: 5,
+                                        child: Container(
+                                          decoration:
+                                              stationService.currentScreen == 2
+                                                  ? stationService.colorsIsTrue
+                                                  : stationService
+                                                      .colorsIsFalse,
+                                          child: InkWell(
+                                            onTap: () {
+                                              stationService.setScreen(2);
+                                            },
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Icon(
+                                                  LineAwesomeIcons
+                                                      .low_temperature,
+                                                  color: stationService
+                                                              .currentScreen ==
+                                                          2
+                                                      ? stationService
+                                                          .colorIconIsTrue
+                                                      : stationService
+                                                          .colorIconIsFalse,
+                                                  size: 30,
+                                                ),
+                                                Text(
+                                                  'Dados',
+                                                  style: TextStyle(
+                                                      fontFamily: 'Schyler',
+                                                      color: stationService
+                                                                  .currentScreen ==
+                                                              2
+                                                          ? stationService
+                                                              .colorIconIsTrue
+                                                          : stationService
+                                                              .colorIconIsFalse,
+                                                      fontSize: 12),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: cardSize,
+                                    width: cardSize,
+                                    child: Card(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      elevation: 5,
+                                      child: Container(
+                                        decoration:
+                                            stationService.currentScreen == 3
+                                                ? stationService.colorsIsTrue
+                                                : stationService.colorsIsFalse,
+                                        child: InkWell(
+                                          onTap: () {
+                                            stationService.setScreen(3);
+                                          },
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Icon(
+                                                LineAwesomeIcons.map_marked,
+                                                color: stationService
+                                                            .currentScreen ==
+                                                        3
+                                                    ? stationService
+                                                        .colorIconIsTrue
+                                                    : stationService
+                                                        .colorIconIsFalse,
+                                                size: 30,
+                                              ),
+                                              Text(
+                                                'Localização',
+                                                style: TextStyle(
+                                                    fontFamily: 'Schyler',
+                                                    color: stationService
+                                                                .currentScreen ==
+                                                            3
+                                                        ? stationService
+                                                            .colorIconIsTrue
+                                                        : stationService
+                                                            .colorIconIsFalse,
+                                                    fontSize: 12),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              child: stationService.currentScreen == 1
+                                  ? StationValve(
+                                      stationModel: widget.stationModel)
+                                  : stationService.currentScreen == 2
+                                      ? StationData(
+                                          cardSize, widget.stationModel)
+                                      : Container(),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 );
               }),

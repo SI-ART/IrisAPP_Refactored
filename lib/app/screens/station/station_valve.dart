@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:iris/models/station/station_model.dart';
 import 'package:iris/service/station/station/stationvalve/station_valve.dart';
 import 'package:iris/utilities/globals.dart';
@@ -13,18 +16,27 @@ class StationValve extends StatefulWidget {
 }
 
 class _StationValveState extends State<StationValve> {
-  late StationValveService stationValveService;
+  late StreamSubscription _onUpdateStatus;
+  StationValveService stationValveService = StationValveService();
   @override
   void initState() {
-    stationValveService = StationValveService(widget.stationModel);
+    stationValveService
+        .getStatusStream(widget.stationModel.idS, widget.stationModel.id,
+            stationValveService.onStatusUpdate)
+        .then((StreamSubscription s) => _onUpdateStatus = s);
     super.initState();
   }
 
   @override
+  void dispose() {
+    _onUpdateStatus.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: stationValveService.statusStream,
-      builder: (context, status) => Column(
+    return Observer(
+      builder: (context) => Column(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(top: 20),
@@ -32,7 +44,7 @@ class _StationValveState extends State<StationValve> {
               children: <Widget>[
                 Center(
                   child: Text(
-                    status.data as bool
+                    stationValveService.status
                         ? 'A estação está Ligada'
                         : 'A estação está Desligada',
                     style: const TextStyle(
@@ -51,11 +63,12 @@ class _StationValveState extends State<StationValve> {
               children: <Widget>[
                 RawMaterialButton(
                   onPressed: () {
-                    stationValveService.setOnDatabase();
+                    stationValveService.setOnDatabase(widget.stationModel);
                   },
                   elevation: 2.0,
-                  fillColor:
-                      status.data as bool ? Colors.red : Global.greenspri,
+                  fillColor: stationValveService.status
+                      ? Colors.red
+                      : Global.greenspri,
                   child: const Icon(
                     LineAwesomeIcons.power_off,
                     color: Colors.white,
