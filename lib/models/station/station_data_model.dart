@@ -6,6 +6,7 @@ class StationDataModel {
   num? umi;
 
   StationDataModel.fromSnapshot(DataSnapshot snapshot) {
+    key = snapshot.key;
     temps = snapshot.value['temperature'];
     umi = snapshot.value['humidity'];
   }

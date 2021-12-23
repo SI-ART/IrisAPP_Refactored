@@ -71,23 +71,25 @@ class _StationState extends State<Station> {
               ],
             ),
           ),
-          SlidingSheet(
-              elevation: 2,
-              cornerRadius: 20,
-              snapSpec: const SnapSpec(
-                  snap: true,
-                  initialSnap: 1.0,
-                  snappings: [0.75, 1.0],
-                  positioning: SnapPositioning.relativeToAvailableSpace),
-              builder: (context, state) {
-                return Container(
-                  color: Colors.white,
-                  height: height,
-                  child: Observer(
-                    builder: (context) => Stack(
+          Observer(
+            builder: (context) => SlidingSheet(
+                elevation: 2,
+                cornerRadius: 20,
+                snapSpec: SnapSpec(
+                    snap: false,
+                    initialSnap: 1.0,
+                    snappings: stationService.currentScreen == 3
+                        ? [double.infinity, 1.0]
+                        : [0.75, 1.0],
+                    positioning: SnapPositioning.relativeToAvailableSpace),
+                builder: (context, state) {
+                  return Container(
+                    color: Colors.white,
+                    height: height,
+                    child: Stack(
                       children: <Widget>[
                         stationService.currentScreen == 3
-                            ? StationMap(cardSize)
+                            ? StationMap(cardSize, widget.stationModel)
                             : Container(),
                         Column(
                           children: <Widget>[
@@ -304,9 +306,9 @@ class _StationState extends State<Station> {
                         ),
                       ],
                     ),
-                  ),
-                );
-              }),
+                  );
+                }),
+          ),
         ],
       ),
     );
