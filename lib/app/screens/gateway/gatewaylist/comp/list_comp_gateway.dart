@@ -50,7 +50,7 @@ class _ListCompGateState extends State<ListCompGate> {
                           SizedBox(
                             height: 110,
                             child: Card(
-                              color: Global.card_colors,
+                              color: Global.white,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20)),
                               elevation: 1,

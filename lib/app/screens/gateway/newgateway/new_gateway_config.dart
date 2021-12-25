@@ -1,40 +1,42 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:iris/service/gateway/newgateway/newgateapi.dart';
-import 'package:iris/service/user/user.dart';
+import 'package:iris/utilities/globals.dart';
 import 'package:iris/utilities/widget/circlewavepainter.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
+import 'package:iris/service/gateway/newgateway/new_gateway_service.dart';
 
-class NewGatewayAdd extends StatefulWidget {
-  final NewGatewayService gatewayService;
-  const NewGatewayAdd(this.gatewayService, {Key? key}) : super(key: key);
+class NewGatewayConfig extends StatefulWidget {
+  final NewGatewayService newGatewayService;
+  const NewGatewayConfig({Key? key, required this.newGatewayService})
+      : super(key: key);
+
   @override
-  _NewGatewayState createState() => _NewGatewayState();
+  _NewGatewayConfigState createState() => _NewGatewayConfigState();
 }
 
-class _NewGatewayState extends State<NewGatewayAdd>
+class _NewGatewayConfigState extends State<NewGatewayConfig>
     with SingleTickerProviderStateMixin {
-  late Animation<double> _animation;
-  late AnimationController controller;
-  double waveRadius = 0.0;
-  double waveGap = 40.0;
-
   @override
   void initState() {
-    controller = AnimationController(
+    super.initState();
+    widget.newGatewayService.controller = AnimationController(
         duration: const Duration(milliseconds: 1500), vsync: this);
 
-    controller.forward();
+    widget.newGatewayService.controller!.forward();
 
-    controller.addStatusListener((status) {
+    widget.newGatewayService.controller!.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        controller.reset();
+        widget.newGatewayService.controller!.reset();
       } else if (status == AnimationStatus.dismissed) {
-        controller.forward();
+        widget.newGatewayService.controller!.forward();
       }
     });
+  }
 
-    super.initState();
+  @override
+  void dispose() {
+    widget.newGatewayService.stopScan();
+    widget.newGatewayService.controller!.dispose();
+    super.dispose();
   }
 
   @override
@@ -44,12 +46,15 @@ class _NewGatewayState extends State<NewGatewayAdd>
     double height = queryData.size.height;
     double width = queryData.size.width;
 
-    _animation = Tween(begin: 0.0, end: waveGap).animate(controller)
-      ..addListener(() {
-        setState(() {
-          waveRadius = _animation.value;
-        });
-      });
+    widget.newGatewayService.animation =
+        Tween(begin: 0.0, end: widget.newGatewayService.waveGap)
+            .animate(widget.newGatewayService.controller!)
+          ..addListener(() {
+            setState(() {
+              widget.newGatewayService.waveRadius =
+                  widget.newGatewayService.animation!.value;
+            });
+          });
 
     return Stack(
       children: <Widget>[
@@ -65,8 +70,8 @@ class _NewGatewayState extends State<NewGatewayAdd>
                 children: <Widget>[
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const Padding(
+                    children: const <Widget>[
+                      Padding(
                         padding: EdgeInsets.only(left: 20),
                         child: Text(
                           'Novo Gateway',
@@ -77,13 +82,16 @@ class _NewGatewayState extends State<NewGatewayAdd>
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: Text(
-                          'Adicionar um novo Gateway',
-                          style: TextStyle(
-                              fontFamily: 'Schyler',
-                              color: Colors.black.withOpacity(0.3),
-                              fontSize: 14),
+                        padding: EdgeInsets.only(left: 20),
+                        child: Opacity(
+                          opacity: 0.3,
+                          child: Text(
+                            'Adicionar um novo Gateway',
+                            style: TextStyle(
+                                fontFamily: 'Schyler',
+                                color: Colors.black,
+                                fontSize: 14),
+                          ),
                         ),
                       ),
                     ],
@@ -102,53 +110,40 @@ class _NewGatewayState extends State<NewGatewayAdd>
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                FutureBuilder(
-                                  future: UserData().userPic,
-                                  initialData: "",
-                                  builder: (BuildContext context,
-                                          AsyncSnapshot<String> text) =>
-                                      Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 20, top: 20),
-                                    child: Container(
-                                      width: 85,
-                                      height: 85,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: CachedNetworkImageProvider(
-                                              text.data!,
-                                            )),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(20.0)),
-                                        color: Colors.white,
-                                      ),
-                                    ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 20, top: 20),
+                                  child: Container(
+                                    width: 85,
+                                    height: 85,
+                                    /*  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: CachedNetworkImageProvider(
+                                            image,
+                                          )),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(20.0)),
+                                      color: Colors.white,
+                                    ),*/
                                   ),
                                 ),
-                                FutureBuilder(
-                                  future: UserData().userName,
-                                  initialData: "",
-                                  builder: (BuildContext context,
-                                          AsyncSnapshot<String> text) =>
-                                      Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 40, left: 20),
-                                        child: Text(
-                                          text.data!,
-                                          style: const TextStyle(
-                                              fontFamily: 'Schyler',
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black,
-                                              fontSize: 14),
-                                        ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: const <Widget>[
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(top: 40, left: 20),
+                                      child: Text(
+                                        'nome',
+                                        style: TextStyle(
+                                            fontFamily: 'Schyler',
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 14),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -164,9 +159,11 @@ class _NewGatewayState extends State<NewGatewayAdd>
                               child: SizedBox(
                                 width: width * 0.8,
                                 child: TextFormField(
-                                  controller: widget.gatewayService.nameGateway,
+                                  controller:
+                                      widget.newGatewayService.nameGateway,
                                   decoration: InputDecoration(
-                                      errorText: isUserNameValidate
+                                      errorText: widget.newGatewayService
+                                              .isUserNameValidate
                                           ? 'Insira uma nome'
                                           : null,
                                       border: InputBorder.none,
@@ -181,7 +178,8 @@ class _NewGatewayState extends State<NewGatewayAdd>
                               child: SizedBox(
                                 width: width * 0.8,
                                 child: TextFormField(
-                                  controller: widget.gatewayService.descGateway,
+                                  controller:
+                                      widget.newGatewayService.descGateway,
                                   decoration: const InputDecoration(
                                       border: InputBorder.none,
                                       labelText: 'Descrição (Opcional)',
@@ -198,7 +196,7 @@ class _NewGatewayState extends State<NewGatewayAdd>
                                   width: width * 0.6,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      // widget.gatewayService.test();
+                                      widget.newGatewayService.start(context);
                                     },
                                     style: ElevatedButton.styleFrom(
                                         padding: EdgeInsets.zero,
@@ -211,8 +209,8 @@ class _NewGatewayState extends State<NewGatewayAdd>
                                               begin: Alignment.topLeft,
                                               end: Alignment.bottomRight,
                                               colors: [
-                                                Colors.greenAccent,
-                                                Colors.blue
+                                                Global.greensec,
+                                                Global.greenspri
                                               ]),
                                           borderRadius:
                                               BorderRadius.circular(10)),
@@ -246,13 +244,11 @@ class _NewGatewayState extends State<NewGatewayAdd>
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 50),
-          child: widget.gatewayService.initScan ? buildSheet() : Container(),
+          child: widget.newGatewayService.initScan ? buildSheet() : Container(),
         ),
       ],
     );
   }
-
-  bool isUserNameValidate = false;
 
   Widget buildSheet() {
     return SlidingSheet(
@@ -262,14 +258,11 @@ class _NewGatewayState extends State<NewGatewayAdd>
           snap: true,
           snappings: [112, 400, double.infinity],
           positioning: SnapPositioning.pixelOffset),
-      builder: (_, state) {
+      builder: (context, state) {
         return Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-                colors: [
-                  Color(0xFF3366FF),
-                  Color(0xFF00CCFF),
-                ],
+                colors: [Global.greensec, Global.greenspri],
                 begin: FractionalOffset(0.0, 0.0),
                 end: FractionalOffset(1.0, 0.0),
                 stops: [0.0, 1.0],
@@ -278,7 +271,7 @@ class _NewGatewayState extends State<NewGatewayAdd>
           height: 300,
           child: CustomPaint(
             size: const Size(double.infinity, double.infinity),
-            painter: CircleWavePainter(waveRadius),
+            painter: CircleWavePainter(widget.newGatewayService.waveRadius),
           ),
         );
       },
@@ -299,36 +292,12 @@ class _NewGatewayState extends State<NewGatewayAdd>
           width: double.infinity,
           child: Center(
             child: Text(
-              widget.gatewayService.connectionText,
+              widget.newGatewayService.connectionText,
               style: const TextStyle(color: Colors.white, fontSize: 25),
             ),
           ),
         );
       },
     );
-  }
-
-  bool validateTextField(String userInput) {
-    if (userInput.isEmpty) {
-      setState(() {
-        isUserNameValidate = true;
-      });
-      return false;
-    }
-    setState(() {
-      isUserNameValidate = false;
-    });
-    return true;
-  }
-
-  Future<void> start(BuildContext context) async {
-    if (widget.gatewayService.nameGateway.text.isNotEmpty) {
-      setState(() {
-        widget.gatewayService.initScan = true;
-      });
-      widget.gatewayService.startScan(context);
-    } else {
-      validateTextField(widget.gatewayService.nameGateway.text);
-    }
   }
 }

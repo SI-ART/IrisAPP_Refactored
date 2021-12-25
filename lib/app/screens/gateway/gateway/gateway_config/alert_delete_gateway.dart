@@ -1,8 +1,6 @@
 // ignore_for_file: unused_field, avoid_print
 
-import 'dart:ui';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';

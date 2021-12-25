@@ -4,6 +4,7 @@ class Routes {
   static const String newgate = "/newgate";
   static const String chat = "/chatpage";
   static const String gateconfig = "/gateconfig";
+  static const String newstation = "/newstation";
 
   //station
   static const String station = "/station";

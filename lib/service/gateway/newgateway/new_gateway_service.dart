@@ -15,12 +15,16 @@ import 'package:iris/service/user/user.dart';
 import 'package:location_permissions/location_permissions.dart';
 import 'package:mobx/mobx.dart';
 
-class NewGatewayService with Store {
+part 'new_gateway_service.g.dart';
+
+class NewGatewayService = _NewGatewayService with _$NewGatewayService;
+
+abstract class _NewGatewayService with Store {
   Uuid _UART_UUID = Uuid.parse("4fafc201-1fb5-459e-8fcc-c5c9c331914b");
   Uuid _UART_RX = Uuid.parse("808ccec4-d862-11eb-b8bc-0242ac130003");
   Uuid _UART_TX = Uuid.parse("beb5483e-36e1-4688-b7f5-ea07361b26a8");
 
-  late BuildContext context;
+  BuildContext? context;
 
   final flutterReactiveBle = FlutterReactiveBle();
 
@@ -28,28 +32,39 @@ class NewGatewayService with Store {
 
   bool flag = true;
 
-  late GatewayModel gatewayModel;
+  @observable
+  bool isUserNameValidate = false;
+
+  GatewayModel? gatewayModel;
+
+  Animation<double>? animation;
+
+  AnimationController? controller;
+
+  double waveRadius = 0.0;
+
+  double waveGap = 40.0;
 
   @observable
   ObservableList<Message> messages = ObservableList<Message>();
 
   bool isRequest = false;
 
-  final clientID = 0;
+  int clientID = 0;
 
-  final serverID = 1;
+  int serverID = 1;
 
-  late Stream<ConnectionStateUpdate> _currentConnectionStream;
+  Stream<ConnectionStateUpdate>? _currentConnectionStream;
 
-  late StreamSubscription<DiscoveredDevice> _scanStream;
+  StreamSubscription<DiscoveredDevice>? _scanStream;
 
-  late StreamSubscription<ConnectionStateUpdate> _connection;
+  StreamSubscription<ConnectionStateUpdate>? _connection;
 
-  late QualifiedCharacteristic _txCharacteristic;
+  QualifiedCharacteristic? _txCharacteristic;
 
-  late QualifiedCharacteristic _rxCharacteristic;
+  QualifiedCharacteristic? _rxCharacteristic;
 
-  late Stream<List<int>> _receivedDataStream;
+  Stream<List<int>>? _receivedDataStream;
 
   bool _scanning = false;
 
@@ -64,14 +79,15 @@ class NewGatewayService with Store {
 
   String gid = '';
 
+  @observable
   bool initScan = false;
 
-  bool reconnect = false;
+  bool reconnect = true;
 
   bool hello = true;
 
   @observable
-  Observable<bool> goToChat = Observable<bool>(true);
+  bool goToChat = false;
 
   TextEditingController nameGateway = TextEditingController();
 
@@ -93,7 +109,7 @@ class NewGatewayService with Store {
 
   static const serverRequest = 'KQ.?2qf01X|,JZRq8!},';
 
-  String clientRequest = 'tSdcxhoLVYj7oMT500&5';
+  static const clientRequest = 'tSdcxhoLVYj7oMT500&5';
 
   String dialogTitle = "Por favor, fornece-nos a permissao a localizacao!";
 
@@ -103,8 +119,11 @@ class NewGatewayService with Store {
       "Este aplicativo requer Bluetooth para se conectar ao dispositivo. ";
 
   String cancelBtnText = "Não";
+
   String acceptBtnText = "Sim";
+
   double dialogRadius = 10.0;
+
   bool barrierDismissible = true;
 
   Future<void> restartScan() async {
@@ -112,8 +131,8 @@ class NewGatewayService with Store {
       await Future.delayed(const Duration(seconds: 5));
       if (reconnect) {
         print('busca reiniciada');
-        _scanStream.cancel();
-        startScan(context);
+        _scanStream!.cancel();
+        startScan();
       }
     }
   }
@@ -121,25 +140,25 @@ class NewGatewayService with Store {
   Future<void> _sendData(String data) async {
     if (data != oldData) {
       await flutterReactiveBle.writeCharacteristicWithResponse(
-          _rxCharacteristic,
+          _rxCharacteristic!,
           value: data.codeUnits);
       print('escrito');
     }
   }
 
   Future<void> disconnect() async {
-    await _connection.cancel();
+    await _connection!.cancel();
     _connected = false;
   }
 
-  void _stopScan() async {
+  void stopScan() async {
     if (_scanStream != null) {
-      _scanStream.cancel();
+      _scanStream!.cancel();
     }
     _scanning = false;
   }
 
-  void startScan(BuildContext context) async {
+  void startScan() async {
     bool goForIt = false;
     PermissionStatus permission;
     if (Platform.isAndroid) {
@@ -154,24 +173,23 @@ class NewGatewayService with Store {
       _scanStream = flutterReactiveBle
           .scanForDevices(withServices: [_UART_UUID]).listen((device) async {
         await Future.delayed(const Duration(seconds: 2));
-        _stopScan();
+        stopScan();
         await Future.delayed(const Duration(seconds: 2));
         onConnectDevice(device.id, device.name);
       }, onError: (Object error) {
         _logTexts = "${_logTexts}ERROR while scanning:$error \n";
       });
       Future<void>.delayed(const Duration(seconds: 2)).then<void>((_) {
-        _scanStream.cancel();
+        _scanStream!.cancel();
       });
       restartScan();
     } else {
-      await showNoPermissionDialog(context);
+      await showNoPermissionDialog();
     }
   }
 
-  Future<void> showNoPermissionDialog(BuildContext context) async =>
-      showDialog<void>(
-        context: context,
+  Future<void> showNoPermissionDialog() async => showDialog<void>(
+        context: context!,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) => AlertDialog(
           title: const Text('Sem acesso a localização '),
@@ -232,7 +250,7 @@ class NewGatewayService with Store {
           case '~':
             {
               hello = false;
-              print(goToChat);
+              goToChat = true;
               break;
             }
           case '^':
@@ -265,7 +283,6 @@ class NewGatewayService with Store {
     }
   }
 
-  @action
   void onConnectDevice(deviceId, String deviceName) {
     _currentConnectionStream = flutterReactiveBle.connectToAdvertisingDevice(
       id: deviceId,
@@ -274,13 +291,8 @@ class NewGatewayService with Store {
       connectionTimeout: const Duration(seconds: 2),
     );
     _logTexts = "";
-    _currentConnectionStream.listen((event) async {
+    _currentConnectionStream!.listen((event) async {
       connectToDevice(event, deviceName, deviceId);
-      if (event.connectionState == DeviceConnectionState.disconnected) {
-        print('desconectado');
-      } else if (event.connectionState == DeviceConnectionState.connected) {
-        print('conectado');
-      }
     });
   }
 
@@ -308,8 +320,8 @@ class NewGatewayService with Store {
               deviceId: event.deviceId);
 
           _receivedDataStream =
-              flutterReactiveBle.subscribeToCharacteristic(_txCharacteristic);
-          _receivedDataStream.listen((data) {
+              flutterReactiveBle.subscribeToCharacteristic(_txCharacteristic!);
+          _receivedDataStream!.listen((data) {
             onNewReceivedData(data);
           });
           _rxCharacteristic = QualifiedCharacteristic(
@@ -339,7 +351,7 @@ class NewGatewayService with Store {
 
   Future<bool> onBackPressed() async {
     return await showDialog(
-          context: context,
+          context: context!,
           builder: (context) => AlertDialog(
             title: const Text('Você tem certeza?'),
             content:
@@ -389,6 +401,27 @@ class NewGatewayService with Store {
   }
 
   @action
+  Future<void> start(BuildContext contextt) async {
+    if (nameGateway.text.isNotEmpty) {
+      initScan = true;
+      context = contextt;
+      startScan();
+    } else {
+      validateTextField(nameGateway.text);
+    }
+  }
+
+  @action
+  bool validateTextField(String userInput) {
+    if (userInput.isEmpty) {
+      isUserNameValidate = true;
+      return false;
+    }
+    isUserNameValidate = false;
+    return true;
+  }
+
+  @action
   void newServerMsg(String text) {
     messages.add(Message(serverID, text));
 
@@ -401,10 +434,10 @@ class NewGatewayService with Store {
   }
 
   Future<void> _newGatewayOnFirebase() async {
-    await ref.child(gatewayModel.id).set({
-      'Name': gatewayModel.name,
-      'Desc': gatewayModel.desc,
-      'isOn': gatewayModel.isOn,
+    await ref.child(gatewayModel!.id).set({
+      'Name': gatewayModel!.name,
+      'Desc': gatewayModel!.desc,
+      'isOn': gatewayModel!.isOn,
       'refresh': false,
     });
     Modular.to.navigate(Routes.gateway);

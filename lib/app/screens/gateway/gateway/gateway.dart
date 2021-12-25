@@ -260,14 +260,8 @@ class _GatewayState extends State<Gateway> {
                           child: gatewayService.currentScreen == 1
                               ? ElevatedButton(
                                   onPressed: () {
-                                    /*pushNewScreen(
-                                    context,
-                                    screen: NewStation(widget.gatewayModel),
-                                    withNavBar: true,
-                                    // OPTIONAL VALUE. True by default.
-                                    pageTransitionAnimation:
-                                        PageTransitionAnimation.cupertino,
-                                  );*/
+                                    Modular.to.pushNamed('/gateway/newstation',
+                                        arguments: widget.gatewayModel);
                                   },
                                   style: ElevatedButton.styleFrom(
                                       padding: EdgeInsets.zero,
