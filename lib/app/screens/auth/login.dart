@@ -143,11 +143,14 @@ class _LoginState extends State<Login> {
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.only(right: 20),
-                          child: CircleAvatar(
-                            radius: kSpacingUnit.w * 3,
-                            backgroundColor: Colors.transparent,
-                            backgroundImage:
-                                const AssetImage("assets/icon/google.png"),
+                          child: InkWell(
+                            onTap: () => auth.signInwithGoogle(),
+                            child: CircleAvatar(
+                              radius: kSpacingUnit.w * 3,
+                              backgroundColor: Colors.transparent,
+                              backgroundImage:
+                                  const AssetImage("assets/icon/google.png"),
+                            ),
                           ),
                         ),
                         Padding(

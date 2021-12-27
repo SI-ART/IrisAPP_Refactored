@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:iris/service/user/user.dart';
 import 'package:iris/utilities/globals.dart';
 import 'package:iris/utilities/widget/circlewavepainter.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
@@ -15,6 +17,7 @@ class NewGatewayConfig extends StatefulWidget {
 
 class _NewGatewayConfigState extends State<NewGatewayConfig>
     with SingleTickerProviderStateMixin {
+  User user = User();
   @override
   void initState() {
     super.initState();
@@ -116,27 +119,27 @@ class _NewGatewayConfigState extends State<NewGatewayConfig>
                                   child: Container(
                                     width: 85,
                                     height: 85,
-                                    /*  decoration: BoxDecoration(
+                                    decoration: BoxDecoration(
                                       image: DecorationImage(
                                           fit: BoxFit.cover,
                                           image: CachedNetworkImageProvider(
-                                            image,
+                                            user.userPic,
                                           )),
                                       borderRadius: const BorderRadius.all(
                                           Radius.circular(20.0)),
                                       color: Colors.white,
-                                    ),*/
+                                    ),
                                   ),
                                 ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const <Widget>[
+                                  children: <Widget>[
                                     Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 40, left: 20),
+                                      padding: const EdgeInsets.only(
+                                          top: 40, left: 20),
                                       child: Text(
-                                        'nome',
-                                        style: TextStyle(
+                                        user.userName,
+                                        style: const TextStyle(
                                             fontFamily: 'Schyler',
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,

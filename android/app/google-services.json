@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:486619735422:android:7de6f2750a516b17a1bf2f",
+        "mobilesdk_app_id": "1:486619735422:android:43b36b34c8678f7ca1bf2f",
         "android_client_info": {
-          "package_name": "com.igrow.iris"
+          "package_name": "com.example.iris"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "486619735422-bb5kod0v3185mkpc133ulm5ol10it3qg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.iris",
+            "certificate_hash": "814f3702ab4fb38dd52de6cd72b63f47bee6650d"
+          }
+        },
         {
           "client_id": "486619735422-i6rhgk762l6jjdu30hpnpkcc0v5vj2lv.apps.googleusercontent.com",
           "client_type": 3
@@ -44,9 +52,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:486619735422:android:1bc1ad3f731dc837a1bf2f",
+        "mobilesdk_app_id": "1:486619735422:android:7de6f2750a516b17a1bf2f",
         "android_client_info": {
-          "package_name": "com.example.iris"
+          "package_name": "com.igrow.iris"
         }
       },
       "oauth_client": [

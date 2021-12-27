@@ -35,8 +35,6 @@ abstract class _NewGatewayService with Store {
   @observable
   bool isUserNameValidate = false;
 
-  GatewayModel? gatewayModel;
-
   Animation<double>? animation;
 
   AnimationController? controller;
@@ -434,10 +432,10 @@ abstract class _NewGatewayService with Store {
   }
 
   Future<void> _newGatewayOnFirebase() async {
-    await ref.child(gatewayModel!.id).set({
-      'Name': gatewayModel!.name,
-      'Desc': gatewayModel!.desc,
-      'isOn': gatewayModel!.isOn,
+    await ref.child(gid).set({
+      'Name': nameGateway.text,
+      'Desc': descGateway.text,
+      'isOn': true,
       'refresh': false,
     });
     Modular.to.navigate(Routes.gateway);

@@ -1,15 +1,22 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:iris/models/user/user_model.dart';
 import 'package:mobx/mobx.dart';
 
-class UserData {
-  FirebaseAuth auth = FirebaseAuth.instance;
+part 'user.g.dart';
+
+class User = UserData with _$UserData;
+
+abstract class UserData with Store implements Disposable {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @observable
-  Observable<String> userPicS = Observable('');
+  UserModel _userStream = UserModel('', '', '');
 
-  @observable
-  Observable<String> name = Observable('');
+  StreamSubscription? streamSubscription;
 
   /// Get user's uid
   static String get uid {
@@ -18,40 +25,45 @@ class UserData {
 
   ///Verify user's status
   bool get userStatus {
-    if (auth.currentUser == null) {
+    if (_auth.currentUser == null) {
       return false;
     } else {
       return true;
     }
   }
 
-  @action
-  Future<String> get userName async {
-    await FirebaseDatabase.instance
+  Future<StreamSubscription<Event>> getUserStream(
+      void Function(UserModel todo) onData) async {
+    StreamSubscription<Event> subscription = FirebaseDatabase.instance
         .reference()
-        .child('Users')
-        .child(uid)
-        .child("Nome")
-        .once()
-        .then((value) async {
-      name.value = await value.value;
+        .child("Users")
+        .child(UserData.uid)
+        .child('Profile')
+        .onValue
+        .listen((Event event) {
+      var todo = UserModel.fromSnap(event.snapshot);
+      onData(todo);
     });
-    return name.value;
+    return subscription;
+  }
+
+  @override
+  void dispose() {
+    streamSubscription!.cancel();
+  }
+
+  String get userName {
+    getUserStream(updateUserInfo)
+        .then((StreamSubscription s) => streamSubscription = s);
+    return _userStream.name;
+  }
+
+  String get userPic {
+    return _userStream.userPic;
   }
 
   @action
-  Future<String> get userPic async {
-    await FirebaseDatabase.instance
-        .reference()
-        .child('Users')
-        .child(uid)
-        .child("Profile")
-        .child("urlImageProfile")
-        .once()
-        .asObservable()
-        .then((value) {
-      userPicS.value = value.value;
-    });
-    return userPicS.value;
+  void updateUserInfo(UserModel data) {
+    _userStream = data;
   }
 }

@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:iris/service/initialize.dart';
 import 'package:iris/service/user/user.dart';
@@ -15,10 +18,18 @@ class GatewayList extends StatefulWidget {
 }
 
 class _GatewayListState extends State<GatewayList> {
+  User user = User();
+  StreamSubscription? _onUpdateStatus;
   @override
   void initState() {
     IrisInitialize().initIrisApp();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _onUpdateStatus!.cancel();
+    super.dispose();
   }
 
   @override
@@ -39,20 +50,17 @@ class _GatewayListState extends State<GatewayList> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      FutureBuilder(
-                          future: UserData().userPic,
-                          initialData: "",
-                          builder: (BuildContext context,
-                                  AsyncSnapshot<String> text) =>
-                              CircleAvatar(
-                                radius: 32,
-                                backgroundImage: text.data == ''
-                                    ? const AssetImage(
-                                        'assets/image/unknown-user.jpg',
-                                      )
-                                    : CachedNetworkImageProvider(text.data!)
-                                        as ImageProvider,
-                              )),
+                      Observer(
+                        builder: (_) => CircleAvatar(
+                          radius: 32,
+                          backgroundImage: user.userPic == ''
+                              ? const AssetImage(
+                                  'assets/image/unknown-user.jpg',
+                                )
+                              : CachedNetworkImageProvider(user.userPic)
+                                  as ImageProvider,
+                        ),
+                      ),
                       const SizedBox(
                         width: 16,
                       ),
@@ -60,18 +68,15 @@ class _GatewayListState extends State<GatewayList> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          FutureBuilder(
-                              future: UserData().userName,
-                              initialData: "",
-                              builder: (BuildContext context,
-                                      AsyncSnapshot<String> text) =>
-                                  Text(
-                                    'Olá ${text.data}',
-                                    style: TextStyle(
-                                        fontFamily: 'Schyler',
-                                        color: Colors.black.withOpacity(0.3),
-                                        fontSize: 20),
-                                  )),
+                          Observer(
+                            builder: (_) => Text(
+                              'Olá ${user.userName}',
+                              style: TextStyle(
+                                  fontFamily: 'Schyler',
+                                  color: Colors.black.withOpacity(0.3),
+                                  fontSize: 20),
+                            ),
+                          ),
                         ],
                       )
                     ],
