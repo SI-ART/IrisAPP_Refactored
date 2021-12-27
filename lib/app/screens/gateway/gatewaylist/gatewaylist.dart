@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:iris/service/initialize.dart';
+import 'package:iris/service/repository/repository.dart';
 import 'package:iris/service/user/user.dart';
 import 'package:iris/utilities/globals.dart';
 
@@ -23,6 +24,7 @@ class _GatewayListState extends State<GatewayList> {
   @override
   void initState() {
     IrisInitialize().initIrisApp();
+    IrisRepository.enableBluetooth;
     super.initState();
   }
 

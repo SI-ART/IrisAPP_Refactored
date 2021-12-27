@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:iris/app/screens/routes.dart';
-import 'package:iris/models/gateway/gateway_model.dart';
 import 'package:iris/service/gateway/newgateway/CodeReceiver.dart';
 import 'package:iris/service/gateway/newgateway/messages.dart';
 import 'package:iris/service/user/user.dart';
