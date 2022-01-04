@@ -8,7 +8,7 @@ import 'package:path_provider_platform_interface/path_provider_platform_interfac
 // ignore: avoid_classes_with_only_static_members
 ///To save the Excel file in the device
 class FileSaveHelper {
-  static const MethodChannel _platformCall = MethodChannel('launchFile');
+  static const MethodChannel _platformCall = MethodChannel('iris');
 
   ///To save the Excel file in the device
   static Future<void> saveAndLaunchFile(

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -6,7 +5,6 @@ import 'package:iris/app/screens/settings/settings.dart';
 import 'package:iris/service/initialize.dart';
 import 'package:iris/service/user/user.dart';
 import 'package:iris/utilities/globals.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import 'comp/list_comp_gateway.dart';
 

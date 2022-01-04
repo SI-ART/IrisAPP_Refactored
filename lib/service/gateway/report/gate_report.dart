@@ -2,6 +2,7 @@
 
 import 'package:awesome_select/awesome_select.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:iris/models/gateway/gateway_model.dart';
 import 'package:iris/service/gateway/report/report.dart';
 import 'package:iris/service/user/user.dart';
@@ -45,6 +46,21 @@ abstract class _GateReport with Store {
 
   @observable
   String state = 'Configuração de relatório';
+
+  void initReport(GatewayModel gatewayModel) {
+    FirebaseDatabase.instance
+        .reference()
+        .child('Users')
+        .child(UserData.uid)
+        .child("Gateway")
+        .child(gatewayModel.id)
+        .child("Station")
+        .onChildAdded
+        .forEach((element) {
+      sids.add(S2Choice<String>(
+          value: element.snapshot.key!, title: element.snapshot.value["Name"]));
+    });
+  }
 
   @action
   Future<void> generateNewDoc(GatewayModel gatewayModel) async {

@@ -5,22 +5,22 @@ import 'package:flutter/material.dart';
 class MonthCellDecoration extends Decoration {
   const MonthCellDecoration(
       {required this.borderColor,
-      required this.backgroundColor,
-      required this.showIndicator,
-      required this.indicatorColor});
+      this.backgroundColor,
+      this.showIndicator,
+      this.indicatorColor});
 
-  final Color borderColor;
-  final Color backgroundColor;
-  final bool showIndicator;
-  final Color indicatorColor;
+  final Color? borderColor;
+  final Color? backgroundColor;
+  final bool? showIndicator;
+  final Color? indicatorColor;
 
   @override
   BoxPainter createBoxPainter([VoidCallback? onChanged]) {
     return _MonthCellDecorationPainter(
-        borderColor: borderColor,
-        backgroundColor: backgroundColor,
-        showIndicator: showIndicator,
-        indicatorColor: indicatorColor);
+        borderColor: borderColor!,
+        backgroundColor: backgroundColor!,
+        showIndicator: showIndicator!,
+        indicatorColor: indicatorColor!);
   }
 }
 
