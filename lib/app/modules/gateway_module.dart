@@ -1,4 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:iris/app/screens/bottom_navigation.dart';
 import 'package:iris/app/screens/gateway/gateway/gateway.dart';
 import 'package:iris/app/screens/gateway/gateway/gateway_config/gateway_config.dart';
 import 'package:iris/app/screens/gateway/gatewaylist/gatewaylist.dart';

@@ -9,6 +9,9 @@ class Routes {
   //station
   static const String station = "/station";
 
+  //settings
+  static const String settings = "/settings";
+
   //Auth
   static const String login = "/login";
   static const String register = "/register";

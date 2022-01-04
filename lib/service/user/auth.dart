@@ -89,7 +89,7 @@ class Auth {
         .set({
       'Nome': auth.currentUser!.displayName,
       'token': '',
-      'urlImageProfile': ''
+      'urlImageProfile': auth.currentUser!.photoURL,
     });
     Modular.to.navigate(Routes.gateway);
   }
@@ -122,8 +122,9 @@ class Auth {
   }
 
   ///Sign out
-  Future<void> signOut(BuildContext context) async {
+  Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
+    Modular.to.navigate(Modular.initialRoute);
   }
 
   ///Reset Password

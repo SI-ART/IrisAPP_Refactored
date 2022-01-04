@@ -10,6 +10,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:iris/models/gateway/gateway_model.dart';
+import 'package:iris/service/repository/repository.dart';
 import 'package:iris/service/user/user.dart';
 import 'package:location_permissions/location_permissions.dart';
 import 'package:mobx/mobx.dart';
@@ -18,7 +19,7 @@ part 'new_station.g.dart';
 
 class NewStationService = _NewStationService with _$NewStationService;
 
-abstract class _NewStationService with Store {
+abstract class _NewStationService with Store implements Disposable {
   Uuid _UART_UUID = Uuid.parse("32454db8-1322-11ec-82a8-0242ac130003");
   Uuid _UART_RX = Uuid.parse("808ccec4-d862-11eb-b8bc-0242ac130003");
   Uuid _UART_TX = Uuid.parse("beb5483e-36e1-4688-b7f5-ea07361b26a8");
@@ -129,6 +130,25 @@ abstract class _NewStationService with Store {
       .child('Users')
       .child(UserData.uid)
       .child('Gateway');
+
+  @override
+  void dispose() {
+    disableBlue();
+  }
+
+  Future<void> configBluetooth() async {
+    bool statusBlue = await IrisRepository.bluetoothStatus;
+    if (statusBlue == false) {
+      IrisRepository.enableBluetooth;
+    }
+  }
+
+  Future<void> disableBlue() async {
+    bool statusBlue = await IrisRepository.bluetoothStatus;
+    if (statusBlue) {
+      IrisRepository.disableBluetooth;
+    }
+  }
 
   @action
   imgFromCamera() async {
@@ -341,6 +361,31 @@ abstract class _NewStationService with Store {
     }
   }
 
+  Future<bool> onBackPressed() async {
+    return await showDialog(
+          context: context!,
+          builder: (context) => AlertDialog(
+            title: const Text('Você tem certeza?'),
+            content:
+                const Text('Você tem certeza que deseja cancelar a conexão?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('Não'),
+              ),
+              TextButton(
+                onPressed: () {
+                  _disconnect();
+                  Navigator.pop(context);
+                },
+                child: const Text('Sim'),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+  }
+
   Future<void> _syncConnection() async {
     if (flag) {
       _sendData('@');
@@ -402,9 +447,10 @@ abstract class _NewStationService with Store {
 
   @action
   Future<void> start(BuildContext contextt, GatewayModel gate) async {
-    _startScan();
+    await configBluetooth();
     context = contextt;
     gatewayModel = gate;
     initScan = true;
+    _startScan();
   }
 }

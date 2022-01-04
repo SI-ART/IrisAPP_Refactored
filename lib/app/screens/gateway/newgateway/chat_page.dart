@@ -37,71 +37,53 @@ class _ChatPageState extends State<ChatPage> {
       );
     }).toList();
 
-    return WillPopScope(
-      onWillPop: widget.newGatewayService.onBackPressed,
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              widget.newGatewayService.onBackPressed();
-            },
-            icon: const Icon(Icons.west),
-            color: Colors.black,
-          ),
-          backgroundColor: const Color.fromRGBO(249, 249, 249, 1.0),
-          elevation: 0,
-        ),
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 0),
-                child: Column(
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 0),
+            child: Column(
+              children: <Widget>[
+                Flexible(
+                  child: ListView(
+                      padding: const EdgeInsets.all(12.0),
+                      controller: widget.newGatewayService.listScrollController,
+                      children: list),
+                ),
+                Row(
                   children: <Widget>[
                     Flexible(
-                      child: ListView(
-                          padding: const EdgeInsets.all(12.0),
-                          controller:
-                              widget.newGatewayService.listScrollController,
-                          children: list),
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 16.0, bottom: 0),
+                        child: TextField(
+                          style: const TextStyle(fontSize: 15.0),
+                          controller: widget.newGatewayService.message,
+                          decoration: const InputDecoration.collapsed(
+                            hintText: 'Digite sua mensagem aqui',
+                            hintStyle: TextStyle(color: Colors.grey),
+                          ),
+                        ),
+                      ),
                     ),
-                    Row(
-                      children: <Widget>[
-                        Flexible(
-                          child: Container(
-                            margin:
-                                const EdgeInsets.only(left: 16.0, bottom: 0),
-                            child: TextField(
-                              style: const TextStyle(fontSize: 15.0),
-                              controller: widget.newGatewayService.message,
-                              decoration: const InputDecoration.collapsed(
-                                hintText: 'Digite sua mensagem aqui',
-                                hintStyle: TextStyle(color: Colors.grey),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(right: 8.0, bottom: 0),
-                          child: IconButton(
-                            icon: const Icon(Icons.send),
-                            onPressed: () => {
-                              widget.newGatewayService.message.text.isEmpty
-                                  ? null
-                                  : widget.newGatewayService.submitAction(
-                                      widget.newGatewayService.message.text),
-                            },
-                          ),
-                        ),
-                      ],
-                    )
+                    Container(
+                      margin: const EdgeInsets.only(right: 8.0, bottom: 0),
+                      child: IconButton(
+                        icon: const Icon(Icons.send),
+                        onPressed: () => {
+                          widget.newGatewayService.message.text.isEmpty
+                              ? null
+                              : widget.newGatewayService.submitAction(
+                                  widget.newGatewayService.message.text),
+                        },
+                      ),
+                    ),
                   ],
-                ),
-              ),
+                )
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }

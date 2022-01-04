@@ -32,6 +32,10 @@ abstract class UserData with Store implements Disposable {
     }
   }
 
+  String get userEmail {
+    return _auth.currentUser!.email!;
+  }
+
   Future<StreamSubscription<Event>> getUserStream(
       void Function(UserModel todo) onData) async {
     StreamSubscription<Event> subscription = FirebaseDatabase.instance

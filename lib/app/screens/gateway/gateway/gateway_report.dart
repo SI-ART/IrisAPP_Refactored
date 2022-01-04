@@ -98,8 +98,7 @@ class _GatewayReportState extends State<GatewayReport> {
                         leading: Container(
                           width: 40,
                           alignment: Alignment.center,
-                          child: const Icon(
-                              CommunityMaterialIcons.access_point_network),
+                          child: const Icon(CommunityMaterialIcons.calendar),
                         ),
                       );
                     },

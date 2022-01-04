@@ -10,6 +10,7 @@ import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:iris/app/screens/routes.dart';
 import 'package:iris/service/gateway/newgateway/CodeReceiver.dart';
 import 'package:iris/service/gateway/newgateway/messages.dart';
+import 'package:iris/service/repository/repository.dart';
 import 'package:iris/service/user/user.dart';
 import 'package:location_permissions/location_permissions.dart';
 import 'package:mobx/mobx.dart';
@@ -18,7 +19,7 @@ part 'new_gateway_service.g.dart';
 
 class NewGatewayService = _NewGatewayService with _$NewGatewayService;
 
-abstract class _NewGatewayService with Store {
+abstract class _NewGatewayService with Store implements Disposable {
   Uuid _UART_UUID = Uuid.parse("4fafc201-1fb5-459e-8fcc-c5c9c331914b");
   Uuid _UART_RX = Uuid.parse("808ccec4-d862-11eb-b8bc-0242ac130003");
   Uuid _UART_TX = Uuid.parse("beb5483e-36e1-4688-b7f5-ea07361b26a8");
@@ -122,6 +123,25 @@ abstract class _NewGatewayService with Store {
   double dialogRadius = 10.0;
 
   bool barrierDismissible = true;
+
+  @override
+  void dispose() {
+    disableBlue();
+  }
+
+  Future<void> configBluetooth() async {
+    bool statusBlue = await IrisRepository.bluetoothStatus;
+    if (statusBlue == false) {
+      IrisRepository.enableBluetooth;
+    }
+  }
+
+  Future<void> disableBlue() async {
+    bool statusBlue = await IrisRepository.bluetoothStatus;
+    if (statusBlue) {
+      IrisRepository.disableBluetooth;
+    }
+  }
 
   Future<void> restartScan() async {
     if (reconnect) {
@@ -400,6 +420,7 @@ abstract class _NewGatewayService with Store {
   @action
   Future<void> start(BuildContext contextt) async {
     if (nameGateway.text.isNotEmpty) {
+      await configBluetooth();
       initScan = true;
       context = contextt;
       startScan();
