@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:iris/models/station/station_model.dart';
 import 'package:iris/service/station/station/station.dart';
 import 'package:iris/utilities/globals.dart';
@@ -37,7 +38,10 @@ class _StationState extends State<Station> {
           IconButton(
             icon: const Icon(Icons.settings),
             color: Colors.black,
-            onPressed: () {},
+            onPressed: () {
+              Modular.to
+                  .pushNamed('stationconfig', arguments: widget.stationModel);
+            },
           ),
         ],
         leading: IconButton(

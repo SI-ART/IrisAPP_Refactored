@@ -8,6 +8,7 @@ class Routes {
 
   //station
   static const String station = "/station";
+  static const String stationconfig = "/stationconfig";
 
   //settings
   static const String settings = "/settings";

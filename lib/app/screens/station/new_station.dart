@@ -89,12 +89,15 @@ class _NewStationState extends State<NewStation>
           });
 
     return WillPopScope(
-      onWillPop: newStationService.onBackPressed,
+      onWillPop: () async => await newStationService.onBackPressed(context),
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            onPressed: () {
-              newStationService.onBackPressed();
+            onPressed: () async {
+              bool result = await newStationService.onBackPressed(context);
+              if (result) {
+                Navigator.of(context).pop();
+              }
             },
             icon: const Icon(Icons.west),
             color: Colors.black,

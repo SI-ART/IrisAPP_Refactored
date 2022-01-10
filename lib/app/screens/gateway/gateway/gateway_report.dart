@@ -269,7 +269,6 @@ class _GatewayReportState extends State<GatewayReport> {
         for (int i = 0; i < snap.docs.length; i++) {
           var data = snap.docs[i];
           a.add(data["temperature"]);
-          print(data["temperature"]);
           templist![date![d]] = a;
         }
       });

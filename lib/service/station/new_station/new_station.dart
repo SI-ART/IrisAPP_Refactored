@@ -79,7 +79,7 @@ abstract class _NewStationService with Store implements Disposable {
 
   bool flagInit = false;
 
-  int sid = 0;
+  String sid = '';
 
   String dialogTitle = "Por favor, fornece-nos a permissão para a localizacao!";
 
@@ -323,13 +323,11 @@ abstract class _NewStationService with Store implements Disposable {
 
   Future<void> onNewReceivedData(List<int> data) async {
     print(String.fromCharCodes(data));
-    String teste;
     if (String.fromCharCodes(data) != oldData) {
       oldData = String.fromCharCodes(data);
 
       if (isWaitingSid) {
-        teste = String.fromCharCodes(data);
-        sid = int.parse(teste);
+        sid = String.fromCharCodes(data);
 
         isWaitingSid = false;
       }
@@ -353,7 +351,7 @@ abstract class _NewStationService with Store implements Disposable {
           case '&':
             {
               _disconnect();
-              _newStationOnFirebase();
+              await _newStationOnFirebase();
               break;
             }
         }
@@ -361,9 +359,9 @@ abstract class _NewStationService with Store implements Disposable {
     }
   }
 
-  Future<bool> onBackPressed() async {
+  Future<bool> onBackPressed(BuildContext context) async {
     return await showDialog(
-          context: context!,
+          context: context,
           builder: (context) => AlertDialog(
             title: const Text('Você tem certeza?'),
             content:
@@ -375,8 +373,7 @@ abstract class _NewStationService with Store implements Disposable {
               ),
               TextButton(
                 onPressed: () {
-                  _disconnect();
-                  Navigator.pop(context);
+                  Navigator.of(context).pop(true);
                 },
                 child: const Text('Sim'),
               ),
@@ -419,11 +416,7 @@ abstract class _NewStationService with Store implements Disposable {
   }
 
   Future<void> _setOnFirebase() async {
-    await ref
-        .child(gatewayModel!.id)
-        .child('Station')
-        .child(sid.toString())
-        .set({
+    await ref.child(gatewayModel!.id).child('Station').child(sid).set({
       'Name': nameStation.text,
       'chipID': sid,
       'urlImage': _urlImage,
@@ -437,12 +430,10 @@ abstract class _NewStationService with Store implements Disposable {
   }
 
   Future<void> _newStationOnFirebase() async {
-    if (nameStation.text.isNotEmpty) {
-      await _uploadImage();
-      await _getImageUrl();
-      await _setOnFirebase();
-      Modular.to.navigate('/gateway');
-    }
+    await _uploadImage();
+    await _getImageUrl();
+    await _setOnFirebase();
+    Modular.to.navigate('/gateway');
   }
 
   @action

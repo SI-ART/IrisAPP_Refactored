@@ -13,12 +13,15 @@ class NewGateway extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: newGatewayService.onBackPressed,
+      onWillPop: () async => await newGatewayService.onBackPressed(context),
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            onPressed: () {
-              newGatewayService.onBackPressed();
+            onPressed: () async {
+              bool result = await newGatewayService.onBackPressed(context);
+              if (result) {
+                Navigator.of(context).pop();
+              }
             },
             icon: const Icon(Icons.west),
             color: Colors.black,

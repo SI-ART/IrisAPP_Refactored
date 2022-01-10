@@ -82,7 +82,7 @@ abstract class _NewGatewayService with Store implements Disposable {
 
   bool reconnect = true;
 
-  bool hello = true;
+  bool hello = false;
 
   @observable
   bool goToChat = false;
@@ -266,7 +266,7 @@ abstract class _NewGatewayService with Store implements Disposable {
             }
           case '~':
             {
-              hello = false;
+              hello = true;
               goToChat = true;
               break;
             }
@@ -366,9 +366,9 @@ abstract class _NewGatewayService with Store implements Disposable {
     }
   }
 
-  Future<bool> onBackPressed() async {
+  Future<bool> onBackPressed(BuildContext context) async {
     return await showDialog(
-          context: context!,
+          context: context,
           builder: (context) => AlertDialog(
             title: const Text('Você tem certeza?'),
             content:
@@ -380,8 +380,7 @@ abstract class _NewGatewayService with Store implements Disposable {
               ),
               TextButton(
                 onPressed: () {
-                  disconnect();
-                  Modular.to.navigate(Routes.gateway);
+                  Navigator.of(context).pop(true);
                 },
                 child: const Text('Sim'),
               ),

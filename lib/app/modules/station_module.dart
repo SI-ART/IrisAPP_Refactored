@@ -1,4 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:iris/app/screens/routes.dart';
+import 'package:iris/app/screens/station/config/station_config.dart';
 import 'package:iris/app/screens/station/station.dart';
 
 class StationModule extends Module {
@@ -11,5 +13,7 @@ class StationModule extends Module {
             child: (_, args) => Station(
                   stationModel: args.data,
                 )),
+        ChildRoute(Routes.stationconfig,
+            child: (_, args) => Stationconfig(args.data)),
       ];
 }

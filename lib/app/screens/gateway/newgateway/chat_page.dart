@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:iris/service/gateway/newgateway/new_gateway_service.dart';
 
 class ChatPage extends StatefulWidget {
@@ -11,31 +12,47 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   @override
+  void initState() {
+    widget.newGatewayService.hey();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final List<Row> list = widget.newGatewayService.messages.map((_message) {
-      return Row(
-        children: <Widget>[
-          Container(
-            child: Text(
-                (text) {
-                  return text == '/shrug' ? '¯\\_(ツ)_/¯' : text;
-                }(_message.text.trim()),
-                style: const TextStyle(color: Colors.white)),
-            padding: const EdgeInsets.all(12.0),
-            margin: const EdgeInsets.only(bottom: 8.0, left: 8.0, right: 8.0),
-            width: 222.0,
-            decoration: BoxDecoration(
-                color: _message.whom == widget.newGatewayService.clientID
-                    ? Colors.green
-                    : Colors.grey,
-                borderRadius: BorderRadius.circular(7.0)),
-          ),
-        ],
-        mainAxisAlignment: _message.whom == widget.newGatewayService.clientID
-            ? MainAxisAlignment.end
-            : MainAxisAlignment.start,
+    Widget listChat() {
+      return Observer(
+        builder: (context) => ListView(
+          padding: const EdgeInsets.all(12.0),
+          controller: widget.newGatewayService.listScrollController,
+          children: widget.newGatewayService.messages.map((_message) {
+            return Row(
+              children: <Widget>[
+                Container(
+                  child: Text(
+                      (text) {
+                        return text == '/shrug' ? '¯\\_(ツ)_/¯' : text;
+                      }(_message.text.trim()),
+                      style: const TextStyle(color: Colors.white)),
+                  padding: const EdgeInsets.all(12.0),
+                  margin:
+                      const EdgeInsets.only(bottom: 8.0, left: 8.0, right: 8.0),
+                  width: 222.0,
+                  decoration: BoxDecoration(
+                      color: _message.whom == widget.newGatewayService.clientID
+                          ? Colors.green
+                          : Colors.grey,
+                      borderRadius: BorderRadius.circular(7.0)),
+                ),
+              ],
+              mainAxisAlignment:
+                  _message.whom == widget.newGatewayService.clientID
+                      ? MainAxisAlignment.end
+                      : MainAxisAlignment.start,
+            );
+          }).toList(),
+        ),
       );
-    }).toList();
+    }
 
     return Column(
       children: <Widget>[
@@ -45,10 +62,7 @@ class _ChatPageState extends State<ChatPage> {
             child: Column(
               children: <Widget>[
                 Flexible(
-                  child: ListView(
-                      padding: const EdgeInsets.all(12.0),
-                      controller: widget.newGatewayService.listScrollController,
-                      children: list),
+                  child: listChat(),
                 ),
                 Row(
                   children: <Widget>[
